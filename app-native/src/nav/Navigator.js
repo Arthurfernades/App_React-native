@@ -13,7 +13,7 @@ function Navigator() {
 
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Home">
-                <Stack.Screen name="Home" component={Home}/>
+                <Stack.Screen name="Home" component={Home} options={{title: 'Bem-Vindo!'}}/>
                 <Stack.Screen name="Login" component={Login}/>
                 <Stack.Screen name="Registrar" component={Registrar}/>
             </Stack.Navigator>

@@ -1,14 +1,12 @@
 import { ImageBackground, StyleSheet, View } from "react-native";
 import { IconButton } from "react-native-paper";
 
-import image from '../img/'
-
 function Home({ navigation }) {
 
     return (
 
         <View style={style.container}>
-            <ImageBackground source={image} resizeMode="cover" style={style.image}>
+            <ImageBackground  resizeMode="cover" style={style.image}>
                 <IconButton
                     style={style.button}
                     icon='account'
