@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Avatar, TextInput } from "react-native-paper";
+import { KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Avatar, TextInput } from "react-native-paper";
+import { FIREBASE_AUTH } from "../auth/AuthContext";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 
 function Register({ navigation }) {
@@ -11,40 +13,70 @@ function Register({ navigation }) {
         confirmSenha: ''
     })
 
-    return(
+    const [loading, setLoading] = useState(false);
 
-        <View style = {style.container}>
-            <Avatar.Icon size={96} icon="account" color="blue" style = {style.avatar}/>
-            <TextInput
-                mode="outlined"
-                label="E-mail"
-                style =  {style.input}
-                value={user.email}
-                onChangeText={(e) => setUser({ ...user, email: e })}
-            />
-            <TextInput
-                mode="outlined"
-                label="Senha"
-                secureTextEntry = {true}
-                right={<TextInput.Icon icon="eye" />}
-                style =  {style.input}
-                value={user.senha}
-                onChangeText={(e) => setUser({ ...user, senha: e })}
-            />
-            <TextInput
-                mode="outlined"
-                label="Confirme a senha"
-                secureTextEntry = {true}
-                right={<TextInput.Icon icon="eye" />}
-                style =  {style.input}
-                value={user.confirmSenha}
-                onChangeText={(e) => setUser({ ...user, confirmSenha: e })}
-            />
-            <TouchableOpacity style = {style.button}>
-                <Text style = {style.buttonText}>Cadastrar</Text>
-            </TouchableOpacity>
-        </View>
+    const auth = FIREBASE_AUTH;
 
+    const singUp = async () => {
+
+        setLoading(true);
+        try {
+
+            const response = await createUserWithEmailAndPassword(auth, user.email, user.senha)
+            console.log(response);
+            alert('Verifique seu E-mail!');
+            navigation.navigate("Home");
+        } catch (error) {
+
+            console.log(error);
+            alert('Falha ao tentar criar a conta' + error.message);
+
+        } finally {
+
+            setLoading(false);
+
+        }
+
+    }
+
+    return (
+        <KeyboardAvoidingView behavior="padding">
+            <View style={style.container}>
+                <Avatar.Icon size={96} icon="account" color="blue" style={style.avatar} />
+                <TextInput
+                    mode="outlined"
+                    label="E-mail"
+                    style={style.input}
+                    value={user.email}
+                    onChangeText={(e) => setUser({ ...user, email: e })}
+                />
+                <TextInput
+                    mode="outlined"
+                    label="Senha"
+                    secureTextEntry={true}
+                    right={<TextInput.Icon icon="eye" />}
+                    style={style.input}
+                    value={user.senha}
+                    onChangeText={(e) => setUser({ ...user, senha: e })}
+                />
+                <TextInput
+                    mode="outlined"
+                    label="Confirme a senha"
+                    secureTextEntry={true}
+                    right={<TextInput.Icon icon="eye" />}
+                    style={style.input}
+                    value={user.confirmSenha}
+                    onChangeText={(e) => setUser({ ...user, confirmSenha: e })}
+                />
+                {loading ?
+                    <ActivityIndicator size="large" color="#898075" />
+                    :
+                    <TouchableOpacity style={style.button}>
+                        <Text style={style.buttonText} onPress={singUp}>Cadastrar</Text>
+                    </TouchableOpacity>
+                }
+            </View>
+        </KeyboardAvoidingView>
     );
 
 }

@@ -1,6 +1,7 @@
+import { Text } from "react-native";
 
 
-function HomeUser() {
+function HomeUser({navigation}) {
 
     return(
 
@@ -9,3 +10,5 @@ function HomeUser() {
     )
 
 }
+
+export default HomeUser;

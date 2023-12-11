@@ -1,59 +1,20 @@
-import { createContext, useContext, useState } from "react";
-import { MMKVLoader, useMMKVStorage } from 'react-native-mmkv-storage';
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore"
 
-const AuthContext = createContext();
-
-const storage = new MMKVLoader().initialize();
-
-export const AuthProvider = ({ children }) => {
-
-    const [token, setToken] = useMMKVStorage();
-
-    const singIn = (newToken) => {
-
-        try {
-
-            storage('token', newToken)
-
-        } catch (error) {
-
-            console.error('Erro ao salvar o Token!', error);
-
-        }
-
-    };
-
-    const singOut = () => {
-
-        try {
-            
-            setToken(null);
-
-        } catch (error) {
-            
-            console.error('Erro ao remover o Token!', error);
-
-        }
-
-    }
-
-    return (
-
-        <AuthContext.Provider value={{token, singIn, singOut}}>
-            {children}
-        </AuthContext.Provider>
-
-    );
-
+const firebaseConfig = {
+  apiKey: "AIzaSyDuTfRZAjIJQG24PX5Nt1mdQc1j7JebycI",
+  authDomain: "dipt-d7856.firebaseapp.com",
+  projectId: "dipt-d7856",
+  storageBucket: "dipt-d7856.appspot.com",
+  messagingSenderId: "289703387821",
+  appId: "1:289703387821:web:bf5d5e12f78a6133341c24",
+  measurementId: "G-9Q4SPCCPJ3"
 };
 
-export const useAuth = () => {
+export const FIREBASE_APP = initializeApp(firebaseConfig);
+export const FIREBASE_AUTH = getAuth(FIREBASE_APP);
+export const FIREBASE_DB = getFirestore(FIREBASE_APP);
 
-    const context = useContext(AuthContext);
-    if(!context){
-        throw new Error('useAuth deve ser usado dentro do AuthProvider');
-    }
-
-    return context;
-
-}
+//const analytics = getAnalytics(app);
