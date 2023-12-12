@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { ActivityIndicator, Avatar, TextInput } from "react-native-paper";
 import { FIREBASE_AUTH } from "../auth/AuthContext";
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -13,7 +13,31 @@ function Register({ navigation }) {
         confirmSenha: ''
     })
 
+    const comparaSenha = () => {
+
+        if (user.senha != user.confirmSenha) {
+            setUser({ ...user, confirmSenha: '' });
+            return false;
+        }
+
+        return true;
+    }
+
     const [loading, setLoading] = useState(false);
+
+    const [openEye, setOpenEye] = useState(true);
+
+    const [iconEye, setIconEye] = useState('eye-off');
+
+    const changeEye = () => {
+        if (openEye) {
+            setOpenEye(false);
+            setIconEye('eye');
+        } else {
+            setOpenEye(true);
+            setIconEye('eye-off');
+        }
+    }
 
     const auth = FIREBASE_AUTH;
 
@@ -40,43 +64,44 @@ function Register({ navigation }) {
     }
 
     return (
-        <KeyboardAvoidingView behavior="padding">
-            <View style={style.container}>
-                <Avatar.Icon size={96} icon="account" color="blue" style={style.avatar} />
-                <TextInput
-                    mode="outlined"
-                    label="E-mail"
-                    style={style.input}
-                    value={user.email}
-                    onChangeText={(e) => setUser({ ...user, email: e })}
-                />
-                <TextInput
-                    mode="outlined"
-                    label="Senha"
-                    secureTextEntry={true}
-                    right={<TextInput.Icon icon="eye" />}
-                    style={style.input}
-                    value={user.senha}
-                    onChangeText={(e) => setUser({ ...user, senha: e })}
-                />
-                <TextInput
-                    mode="outlined"
-                    label="Confirme a senha"
-                    secureTextEntry={true}
-                    right={<TextInput.Icon icon="eye" />}
-                    style={style.input}
-                    value={user.confirmSenha}
-                    onChangeText={(e) => setUser({ ...user, confirmSenha: e })}
-                />
-                {loading ?
-                    <ActivityIndicator size="large" color="#898075" />
-                    :
-                    <TouchableOpacity style={style.button}>
-                        <Text style={style.buttonText} onPress={singUp}>Cadastrar</Text>
-                    </TouchableOpacity>
-                }
-            </View>
-        </KeyboardAvoidingView>
+        // <KeyboardAvoidingView behavior="padding">
+        <View style={style.container}>
+            <Avatar.Icon size={96} icon="emoticon-poop" color="#898075" style={style.avatar} />
+            <TextInput
+                mode="outlined"
+                label="E-mail"
+                style={style.input}
+                value={user.email}
+                onChangeText={(e) => setUser({ ...user, email: e })}
+            />
+            <TextInput
+                mode="outlined"
+                label="Senha"
+                secureTextEntry={openEye}
+                right={<TextInput.Icon icon={iconEye}onPress={changeEye} />}
+                style={style.input}
+                value={user.senha}
+                onChangeText={(e) => setUser({ ...user, senha: e })}
+            />
+            <TextInput
+                mode="outlined"
+                label="Confirme a senha"
+                secureTextEntry={openEye}
+                right={<TextInput.Icon icon={iconEye}onPress={changeEye} />}
+                style={style.input}
+                value={user.confirmSenha}
+                onChangeText={(e) => setUser({ ...user, confirmSenha: e })}
+                onEndEditing={comparaSenha}
+            />
+            {loading ?
+                <ActivityIndicator size="large" color="#898075" />
+                :
+                <TouchableOpacity style={style.button}>
+                    <Text style={style.buttonText} onPress={singUp}>Cadastrar</Text>
+                </TouchableOpacity>
+            }
+        </View>
+        // </KeyboardAvoidingView>
     );
 
 }
@@ -87,16 +112,21 @@ const style = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: '#DEB787'
     },
     input: {
         width: '80%',
         margin: 10
     },
     button: {
-        width: '30%',
-        backgroundColor: '#6495ed',
+        backgroundColor: '#A987DE',
+        width: '60%',
         alignItems: 'center',
-        borderRadius: '3px',
+        borderRadius: '10px',
+        borderBottomWidth: 2,
+        borderBottomColor: '#DE9987',
+        elevation: 5,
+        margin: '40px'
     },
     buttonText: {
         color: 'white',

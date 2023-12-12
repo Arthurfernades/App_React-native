@@ -1,28 +1,34 @@
-import { StyleSheet, View, Text } from "react-native";
-import { IconButton } from "react-native-paper";
-import { TouchableOpacity } from "react-native-web";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { useFonts } from "expo-font";
 
 function Home({ navigation }) {
+
+    const [fontsLoaded] = useFonts({
+
+        'milks-casual': require('../../assets/fonts/milks-casual.ttf')
+
+    });
 
     return (
 
         <View style={style.container}>
-            <View>
-                <Text style = {style.title}>
-                    Did I Poop Today?
-                </Text>
-                <TouchableOpacity
-                    style={style.button}
-                    onPress={() => navigation.navigate("Login")}>
-                        <Text style = {style.text}>Acessar conta</Text>
-                    </TouchableOpacity>
-                <TouchableOpacity
-                    style={style.button}
-                    onPress={() => navigation.navigate("Registrar")}>
-                        <Text style = {style.text}>Criar conta</Text>
-                    </TouchableOpacity>
-            </View>
-
+            <Text style={style.title}>
+                Did I
+                <br/>
+                Poop
+                <br/>
+                Today?
+            </Text>
+            <TouchableOpacity
+                style={style.button}
+                onPress={() => navigation.navigate("Login")}>
+                <Text style={style.text}>Acessar conta</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={style.button}
+                onPress={() => navigation.navigate("Registrar")}>
+                <Text style={style.text}>Criar conta</Text>
+            </TouchableOpacity>
         </View>
 
     );
@@ -34,26 +40,33 @@ const style = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#DEB787",
-        justifyContent: 'center',
         alignItems: 'center',
-        
+        justifyContent: 'center'
     },
     title: {
-        flex: 2,
-        fontFamily: "milks-casual",
         fontSize: 60,
-        justifyContent: 'center',
+        fontWeight: 'bold',
+        color: '#A987DE',
+        textAlign: 'center',
+        marginVertical: 10,
+        textAlign: 'center',
+        fontFamily: 'milks-casual',
+        lineHeight: '100px'
     },
     text: {
-        color: 'white',
-        fontSize: 30
+        color: 'black',
+        fontSize: 30,
+        fontFamily: 'milks-casual'
     },
     button: {
-        flex: 1,
         backgroundColor: '#A987DE',
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        alignItems: 'center'
+        width: '80%',
+        alignItems: 'center',
+        borderRadius: '10px',
+        borderBottomWidth: 2,
+        borderBottomColor: '#DE9987',
+        elevation: 5,
+        margin: '40px'
     },
 
 })
